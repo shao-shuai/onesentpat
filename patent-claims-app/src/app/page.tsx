@@ -12,6 +12,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 interface Claim {
   number: string;
   text: string;
+  isIndependent?: boolean;
 }
 
 export default function Home() {
@@ -111,9 +112,14 @@ export default function Home() {
             <CardContent>
               <div className="space-y-6">
                 {claims.map((claim, index) => (
-                  <div key={claim.number}>
+                  <div key={claim.number} className={claim.isIndependent ? "bg-blue-50 border-l-4 border-blue-400 pl-4 py-2 rounded-r-lg" : ""}>
                     <div className="flex items-center gap-2 mb-2">
                       <Badge variant="outline">Claim {claim.number}</Badge>
+                      {claim.isIndependent && (
+                        <Badge variant="default" className="bg-blue-600 hover:bg-blue-700">
+                          Independent
+                        </Badge>
+                      )}
                     </div>
                     <p className="text-sm text-muted-foreground leading-relaxed">
                       {claim.text}

@@ -4,6 +4,7 @@ import * as cheerio from 'cheerio';
 interface Claim {
   number: string;
   text: string;
+  isIndependent?: boolean;
 }
 
 function formatPatentNumber(input: string): string {
@@ -56,9 +57,11 @@ async function fetchPatentData(url: string): Promise<Claim[]> {
         
         if (claimText && !claimNumbers.has(claimNumber)) {
           claimNumbers.add(claimNumber);
+          const isIndependent = !claimText.match(/\b(?:claim|according to claim|as (?:in|defined in) claim)\s+\d+/i);
           claims.push({
             number: claimNumber,
-            text: claimText
+            text: claimText,
+            isIndependent
           });
         }
       }
@@ -80,9 +83,11 @@ async function fetchPatentData(url: string): Promise<Claim[]> {
           
           if (claimText && !claimNumbers.has(claimNumber)) {
             claimNumbers.add(claimNumber);
+            const isIndependent = !claimText.match(/\b(?:claim|according to claim|as (?:in|defined in) claim)\s+\d+/i);
             claims.push({
               number: claimNumber,
-              text: claimText
+              text: claimText,
+              isIndependent
             });
           }
         }
